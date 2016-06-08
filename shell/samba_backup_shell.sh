@@ -1,12 +1,14 @@
 #!/bin/bash
 #Samba backup shell version 1.1 create on 2016/4/6 by Jensen.Version1.1 modifid on 2016/4/14 by Jensen.
 
-USER=backup
-PASSWORD=kis@5688
-DISTPATH=//10.60.80.182/backup
-SRCPATH=/mnt/backup
-HRFILE=/HR
-SZFILE=/shenzhen
+#Global variable
+USER=
+PASSWORD=
+DISTPATH=
+SRCPATH=
+HRFILE=
+SZFILE=
+EMAIL=
 
 function FullBackup() {
   tar -zcPf "$BACKUPPATH/`date +%F`hrfullbackup.tar.gz" $HRFILE --exclude /HR/scan --exclude /HR/photo_video && echo "HR data backup successfully!" >> samba_backup_log || echo "HR data backup fail!" >> samba_backup_log
@@ -78,7 +80,7 @@ fi
 
 umount $SRCPATH && echo "Unmount network drive." >> samba_backup_log
 
-mail -s "Samba remote data backup report" jianjiajun@cmcm.com < samba_backup_log
+mail -s "Samba remote data backup report" $EMAIL < samba_backup_log
 rm -f samba_backup_log
 
 cd /home/samba/backup
