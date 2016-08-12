@@ -1,13 +1,21 @@
 #!/bin/bash
-#Samba backup shell version 1.1 create on 2016/4/6 by Jensen.Version1.1 modifid on 2016/4/14 by Jensen.
+#Samba backup shell version 1.1 create on 2016/4/6 by Jensen.
 
 #Global variable
+
+##Samba server login account & password.##
 USER=
 PASSWORD=
+
+##Destination path & Source path.##
 DISTPATH=
 SRCPATH=
+
+#Example
 HRFILE=
 SZFILE=
+
+##Email address
 EMAIL=
 
 function FullBackup() {
@@ -61,7 +69,7 @@ echo "`date +%F` Samba remote backup report" >> samba_backup_log
 echo "*************************************" >> samba_backup_log
 echo
 
-#mount remote document
+#Mount remote path
 mount -t cifs -o username="$USER",password="$PASSWORD" $DISTPATH $SRCPATH
 
 if [ "`date +%a`" = "Sun" ]
@@ -80,6 +88,7 @@ fi
 
 umount $SRCPATH && echo "Unmount network drive." >> samba_backup_log
 
+#Send the backup logs to Email
 mail -s "Samba remote data backup report" $EMAIL < samba_backup_log
 rm -f samba_backup_log
 
