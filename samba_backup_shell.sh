@@ -11,20 +11,21 @@ PASSWORD=
 DISTPATH=
 SRCPATH=
 
-#Example
+#Example.Input HR and SZ file path.
 HRFILE=
 SZFILE=
 
-##Email address
+##Email address.Send the informations of logs to your Email.
 EMAIL=
 
 function FullBackup() {
-  tar -zcPf "$BACKUPPATH/`date +%F`hrfullbackup.tar.gz" $HRFILE --exclude /HR/scan --exclude /HR/photo_video && echo "HR data backup successfully!" >> samba_backup_log || echo "HR data backup fail!" >> samba_backup_log
+#HR and SZ documents full backup example.
+  tar -zcPf "$BACKUPDISTPATH/`date +%F`hrfullbackup.tar.gz" $HRFILE --exclude /HR/scan --exclude /HR/photo_video && echo "HR data backup successfully!" >> samba_backup_log || echo "HR data backup fail!" >> samba_backup_log
   
-  tar -zcPf "$BACKUPPATH/`date +%F`szfullbackup.tar.gz" $SZFILE && echo "SZ databackup successfully!" >> samba_backup_log || echo "SZ data backup fail!" >> samba_backup_log
+  tar -zcPf "$BACKUPDISTPATH/`date +%F`szfullbackup.tar.gz" $SZFILE && echo "SZ databackup successfully!" >> samba_backup_log || echo "SZ data backup fail!" >> samba_backup_log
 
   echo >> samba_backup_log
-  cp -R $BACKUPPATH $SRCPATH && echo "Backup copy complete!" >> samba_backup_log
+  cp -R $BACKUPDISTPATH $SRCPATH && echo "Backup copy complete!" >> samba_backup_log
 
   date +%F > /home/samba/backup/backupfull-backup-data
 }
@@ -32,12 +33,12 @@ function FullBackup() {
 function DailyBackup() {
   if [ -f /home/samba/backup/backupfull-backup-data ]
   then
-    tar -N $(cat /home/samba/backup/backupfull-backup-data) -zcPf "$BACKUPPATH/`date +%F`hrfullbackup.tar.gz" $HRFILE --exclude /HR/scan --exclude /HR/photo_video && echo "HR data backup successfully!" >> samba_backup_log || echo "HR data backup fail!" >> samba_backup_log
+    tar -N $(cat /home/samba/backup/backupfull-backup-data) -zcPf "$BACKUPDISTPATH/`date +%F`hrfullbackup.tar.gz" $HRFILE --exclude /HR/scan --exclude /HR/photo_video && echo "HR data backup successfully!" >> samba_backup_log || echo "HR data backup fail!" >> samba_backup_log
   
-    tar -N $(cat /home/samba/backup/backupfull-backup-data) -zcPf "$BACKUPPATH/`date +%F`szfullbackup.tar.gz" $SZFILE && echo "SZ databackup successfully!" >> samba_backup_log || echo "SZ data backup fail!" >> samba_backup_log
+    tar -N $(cat /home/samba/backup/backupfull-backup-data) -zcPf "$BACKUPDISTPATH/`date +%F`szfullbackup.tar.gz" $SZFILE && echo "SZ databackup successfully!" >> samba_backup_log || echo "SZ data backup fail!" >> samba_backup_log
 
     echo >> samba_backup_log
-    cp -R $BACKUPPATH $SRCPATH && echo "Backup copy complete!" >> samba_backup_log
+    cp -R $BACKUPDISTPATH $SRCPATH && echo "Backup copy complete!" >> samba_backup_log
   else
     echo "Error,the backupfull-backup-data file is not exist!Please check!" >> samba_backup_log
   fi
@@ -60,7 +61,7 @@ cd /home/samba/backup
 mkdir `date +%F`
 chmod 755 `date +%F`
 cd `date +%F`
-BACKUPPATH=/home/samba/backup/`date +%F`   
+BACKUPDISTPATH=/home/samba/backup/`date +%F`   
 
 #create log file
 touch samba_backup_log
