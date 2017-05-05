@@ -1,7 +1,6 @@
 #########################################################################
 # File Name: sshlogin.sh
 # Author: Jensen
-# mail: linuxidc@linuxidc.com
 # Created Time: Mon 05 Dec 2016 06:02:20 PM CST
 #########################################################################
 #!/usr/bin/expect -f
